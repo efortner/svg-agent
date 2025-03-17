@@ -1,0 +1,45 @@
+{
+  "name": "svg-agent",
+  "version": "0.1.0",
+  "description": "An AI agent for generating SVG files",
+  "scripts": {
+    "clean": "rm -rf dist coverage",
+    "test": "echo",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "prettier": "prettier --check .",
+    "prettier:fix": "prettier --write .",
+    "format": "npm run lint:fix && npm run prettier:fix",
+    "bundle": "esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=cjs --minify",
+    "build": "tsc --noEmit && npm run bundle"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efortner/svg-agent.git"
+  },
+  "author": "Ethan Fortner",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/efortner/svg-agent/issues"
+  },
+  "homepage": "https://github.com/efortner/svg-agent#readme",
+  "devDependencies": {
+    "@types/svg2png": "^4.1.5",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "esbuild": "^0.25.1",
+    "eslint": "^9.22.0",
+    "eslint-config-import": "^0.13.0",
+    "eslint-config-prettier": "^10.1.1",
+    "prettier": "^3.5.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.2",
+    "typescript-eslint": "^8.26.1"
+  },
+  "dependencies": {
+    "@anaplian/core": "^1.14.0",
+    "@anaplian/model-context-size": "^1.0.8",
+    "@langchain/core": "^0.3.42",
+    "svg2png": "^4.1.1"
+  }
+}
