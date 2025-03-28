@@ -7,12 +7,13 @@ export class Svg implements Action<'svg'> {
   private index: number = 0;
 
   name: string = 'svg';
-  arguments: Action<'svg'>['arguments'] = [
-    {
-      name: 'svg',
+  arguments: Action<'svg'>['arguments'] = {
+    svg: {
+      exampleValidValues: [rawExampleSvg],
+      exampleInvalidValues: ['circle', 'star', 'square'],
       description: 'Raw SVG XML',
     },
-  ];
+  };
   description: string =
     'Use this action to create a new iteration of your SVG image. Your SVG will be rendered to a PNG so that you can view the result and make adjustments.';
   examples: {

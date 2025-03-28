@@ -1,5 +1,5 @@
-import { Ollama } from '@langchain/ollama';
 import { buildAgent } from './utilities/agent-factory';
+import { Ollama } from '@langchain/ollama';
 
 (async () => {
   const model = new Ollama({
@@ -13,6 +13,6 @@ import { buildAgent } from './utilities/agent-factory';
       ' Use multiple iterations to fix mistakes and improve detail. You will alternate between using the think() and ' +
       ' svg() actions. Use the think() action to plan and the svg() action to render your SVG.',
   );
-  process.on('SIGCONT', () => agent.shutdown());
+  process.on('SIGINT', () => agent.shutdown());
   await agent.run();
 })();
