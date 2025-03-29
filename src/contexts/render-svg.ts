@@ -1,4 +1,4 @@
-import { ContextProvider } from '@anaplian/core';
+import { ContextProvider, Image } from '@anaplian/core';
 import svg2png from 'svg2png';
 
 type RenderSvgContext = {
@@ -14,33 +14,45 @@ export class RenderSvg
     'renderedSvg',
     RenderSvgContext
   >['getNextContext'] = async (props) => {
-    if (props.actionTaken !== 'svg') {
+    if (!props.actionTaken.startsWith('renderSvg(')) {
       return {
         svgHistory: props.priorContext.renderedSvg.svgHistory,
         IMAGES: props.priorContext.renderedSvg.IMAGES,
       };
     }
     const nextSvgId = props.priorContext.renderedSvg.svgHistory.length;
+    let pngBuffer: Buffer | undefined;
+    let svgContent: string;
+    try {
+      svgContent = props.actionResult;
+      pngBuffer = await svg2png(Buffer.from(props.actionResult, 'utf-8'), {
+        width: 400,
+      });
+    } catch (error) {
+      svgContent = `ERROR WHILE RENDERING - argument to "renderSvg" must be in valid SVG XML format`;
+      if (error instanceof Error) {
+        svgContent += `\n\tRAW ERROR: ${error.message}`;
+      }
+    }
     return {
       svgHistory: [
         ...props.priorContext.renderedSvg.svgHistory,
         {
           id: nextSvgId,
-          svg: props.actionResult,
+          svg: svgContent,
         },
       ],
       IMAGES: [
         ...(props.priorContext.renderedSvg.IMAGES || []),
-        {
-          imageType: 'png',
-          imageContent: await svg2png(
-            Buffer.from(props.actionResult, 'utf-8'),
-            {
-              width: 400,
-            },
-          ),
-          annotation: `Rendered PNG of SVG ID ${nextSvgId}`,
-        },
+        ...(pngBuffer
+          ? [
+              <Image>{
+                imageType: 'png',
+                imageContent: pngBuffer,
+                annotation: `Rendered PNG of SVG ID ${nextSvgId}`,
+              },
+            ]
+          : []),
       ],
     };
   };
