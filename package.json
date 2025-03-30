@@ -11,7 +11,8 @@
     "prettier:fix": "prettier --write .",
     "format": "npm run lint:fix && npm run prettier:fix",
     "bundle": "esbuild src/index.ts --outfile=dist/index.js --platform=node --bundle --target=node22 --format=cjs --minify",
-    "build": "tsc --noEmit && npm run bundle"
+    "build": "tsc --noEmit && npm run bundle",
+    "start": "node dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,7 @@
   },
   "homepage": "https://github.com/efortner/svg-agent#readme",
   "devDependencies": {
-    "@types/svg2png": "^4.1.5",
+    "@anaplian/model-context-size": "^1.0.9",
     "@typescript-eslint/eslint-plugin": "^8.26.1",
     "@typescript-eslint/parser": "^8.26.1",
     "esbuild": "^0.25.1",
@@ -40,7 +41,7 @@
     "@anaplian/core": "^1.15.0",
     "@langchain/core": "^0.3.42",
     "@langchain/ollama": "^0.2.0",
-    "install": "^0.13.0",
-    "svg2png": "^4.1.1"
+    "dotenv": "^16.4.7",
+    "sharp": "^0.33.5"
   }
 }

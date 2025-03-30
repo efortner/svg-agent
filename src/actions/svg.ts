@@ -5,7 +5,7 @@ const rawExampleSvg = `<svg width="100" height="100" xmlns="http://www.w3.org/20
 export class Svg implements Action<'svg'> {
   private index: number = 0;
 
-  name: string = 'renderSvg';
+  name: string = 'render_svg';
   arguments: Action<'svg'>['arguments'] = {
     svg: {
       exampleValidValues: [rawExampleSvg],
@@ -26,6 +26,7 @@ export class Svg implements Action<'svg'> {
   ];
   apply = async (args: Record<'svg', string>): Promise<string> => {
     fs.writeFileSync(`${this.index}.svg`, Buffer.from(args.svg));
+    this.index++;
     return args.svg;
   };
 }

@@ -1,17 +1,24 @@
 import { buildAgent } from './utilities/agent-factory';
-import { Ollama } from '@langchain/ollama';
+import { ChatOllama } from '@langchain/ollama';
 import { LoggingCallback } from './utilities/logging-callback';
+import 'dotenv/config';
+import { getEnvironmentVariable } from './utilities/environment';
+import {
+  getModelContextSize,
+  isModelSupported,
+} from '@anaplian/model-context-size';
 
 (async () => {
-  const model = new Ollama({
-    model: 'gemma3:27b',
+  const modelName = getEnvironmentVariable('MODEL_NAME');
+  const model = new ChatOllama({
+    model: modelName,
     baseUrl: 'http://localhost:11434',
     callbacks: [new LoggingCallback()],
   });
   const agent = await buildAgent(
     model,
-    128_000,
-    'You are a graphic designer, and your goal is to create a vector image of a pixel art-style cat. It must be very detailed.',
+    isModelSupported(modelName) ? getModelContextSize(modelName) : 16_000,
+    getEnvironmentVariable('DIRECTIVE'),
   );
   process.on('SIGINT', () => agent.shutdown());
   await agent.run();
