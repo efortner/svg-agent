@@ -7,6 +7,7 @@ type RenderSvgContext = {
 export class RenderSvg
   implements ContextProvider<'renderedSvg', RenderSvgContext>
 {
+  constructor(private readonly initialContext: RenderSvgContext) {}
   getNextContext: ContextProvider<
     'renderedSvg',
     RenderSvgContext
@@ -56,7 +57,7 @@ export class RenderSvg
     'renderedSvg',
     RenderSvgContext
   >['getInitialContext'] = async () => ({
-    lastSvg: '',
+    ...this.initialContext,
     IMAGES: [],
   });
   key = 'renderedSvg' as const;

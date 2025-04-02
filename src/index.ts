@@ -19,6 +19,7 @@ import {
     model,
     isModelSupported(modelName) ? getModelContextSize(modelName) : 16_000,
     getEnvironmentVariable('DIRECTIVE'),
+    getEnvironmentVariable('INITIAL_SVG'),
   );
   process.on('SIGINT', () => agent.shutdown());
   await agent.run();

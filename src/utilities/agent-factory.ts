@@ -8,13 +8,19 @@ export const buildAgent = (
   model: BaseLLM | BaseChatModel,
   contextWindowSize: number,
   roleAssignmentDirective: string,
+  initialSvg: string,
 ): Promise<AnaplianAgent> =>
   new AgentBuilder({
     model,
     roleAssignmentDirective,
   })
     .setContextWindowSize(contextWindowSize)
-    .addContextProvider(new RenderSvg(), 100)
+    .addContextProvider(
+      new RenderSvg({
+        lastSvg: initialSvg,
+      }),
+      100,
+    )
     .addAction(new Svg())
     .addAction(new NopAction())
     .setOn('afterIterationEnd', async (context) =>
